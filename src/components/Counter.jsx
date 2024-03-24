@@ -3,9 +3,9 @@ import React, { useState } from "react";
 const Counter = ({ node, add, del }) => {
   return (
     <div className="counter">
-      <span>{node.value}</span>
-      <button onClick={() => add(node, node.value - 1)}>+</button>
+      <button onClick={add}>+</button>
       <button onClick={del}>-</button>
+      <span>{node.value}</span>
     </div>
   );
 };

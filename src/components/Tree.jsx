@@ -1,5 +1,6 @@
 import React from "react";
-import "../App.css";
+import Counter from "./Counter";
+
 const TreeNode = ({ node, onAddChild, onDelete }) => {
   const handleAddChild = () => {
     onAddChild(node.id);
@@ -11,11 +12,11 @@ const TreeNode = ({ node, onAddChild, onDelete }) => {
 
   return (
     <div className="tree-node">
-      <div className="counter">
-        <span>{node.value}</span>
-        <button onClick={handleAddChild}>+</button>
-        <button onClick={handleDelete}>-</button>
-      </div>
+      {node.id == 1 ? (
+        <Counter node={node} add={handleAddChild} />
+      ) : (
+        <Counter node={node} add={handleAddChild} del={handleDelete} />
+      )}
       {node.children &&
         node.children.map((child) => (
           <TreeNode
