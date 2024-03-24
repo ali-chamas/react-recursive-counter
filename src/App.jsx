@@ -7,9 +7,12 @@ const App = () => {
   const [treeData, setTreeData] = useState(counterTree);
 
   const handleAddChild = (parentNode) => {
-    const newNodeId = Math.floor(Math.random() * 1000) + 1;
-    const newChildValue = parentNode.children ? parentNode.children.length : 0;
-    const newNode = { id: newNodeId, value: `-${newChildValue + 1}` };
+    //retrieve the index of the added child
+    const newValue = parentNode.children ? parentNode.children.length : 0;
+    const newNode = {
+      id: Math.floor(Math.random() * 100000) + 1,
+      value: `-${newValue + 1}`,
+    };
 
     const updatedParent = {
       ...parentNode,
@@ -18,12 +21,23 @@ const App = () => {
 
     const updatedTreeData = updateNode(
       treeData,
-      updatedParent.id,
+
       updatedParent
     );
     setTreeData(updatedTreeData);
   };
 
+  const updateNode = (tree, newNode) => {
+    if (tree.id === newNode.id) {
+      return newNode;
+    }
+
+    const updatedChildren = tree.children?.map((child) =>
+      updateNode(child, newNode)
+    );
+
+    return { ...tree, children: updatedChildren };
+  };
   const handleDeleteNode = (nodeId) => {
     const updatedTree = deleteNode(treeData, nodeId);
     setTreeData(updatedTree);
@@ -39,26 +53,11 @@ const App = () => {
     return { ...tree, children: updatedChildren };
   };
 
-  const updateNode = (tree, nodeId, newNode) => {
-    if (tree.id === nodeId) {
-      return newNode;
-    }
-
-    if (tree.children) {
-      const updatedChildren = tree.children.map((child) =>
-        updateNode(child, nodeId, newNode)
-      );
-      return { ...tree, children: updatedChildren };
-    }
-
-    return tree;
-  };
-
   return (
     <div>
       <TreeNode
         node={treeData}
-        onAddChild={handleAddChild}
+        onAdd={handleAddChild}
         onDelete={handleDeleteNode}
       />
     </div>

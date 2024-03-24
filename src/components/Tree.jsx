@@ -1,28 +1,28 @@
 import React from "react";
 import Counter from "./Counter";
 
-const TreeNode = ({ node, onAddChild, onDelete }) => {
-  const handleAddChild = () => {
-    onAddChild(node);
+const TreeNode = ({ node, onAdd, onDelete }) => {
+  const addChild = () => {
+    onAdd(node);
   };
 
-  const handleDelete = () => {
+  const deleteChild = () => {
     onDelete(node.id);
   };
 
   return (
     <div className="tree-node">
       {node.id == 1 ? (
-        <Counter node={node} add={handleAddChild} />
+        <Counter node={node} add={addChild} />
       ) : (
-        <Counter node={node} add={handleAddChild} del={handleDelete} />
+        <Counter node={node} add={addChild} del={deleteChild} />
       )}
       {node.children &&
         node.children.map((child) => (
           <TreeNode
             key={child.id}
             node={child}
-            onAddChild={onAddChild}
+            onAdd={onAdd}
             onDelete={onDelete}
           />
         ))}
