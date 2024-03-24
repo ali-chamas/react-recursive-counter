@@ -6,36 +6,22 @@ import "./App.css";
 const App = () => {
   const [treeData, setTreeData] = useState(counterTree);
 
-  const handleAddChild = (parentId) => {
-    const parentNode = findNode(treeData, parentId);
-    if (!parentNode) return;
-
+  const handleAddChild = (parentNode) => {
     const newNodeId = Math.floor(Math.random() * 1000) + 1;
+    const newChildValue = parentNode.children ? parentNode.children.length : 0;
+    const newNode = { id: newNodeId, value: `-${newChildValue + 1}` };
 
-    if (parentNode.children && Array.isArray(parentNode.children)) {
-      const newChildValue = parentNode.children.length;
-      const newNode = { id: newNodeId, value: `-${newChildValue + 1}` };
+    const updatedParent = {
+      ...parentNode,
+      children: [...(parentNode.children || []), newNode],
+    };
 
-      const updatedParent = {
-        ...parentNode,
-        children: [...parentNode.children, newNode],
-      };
-
-      const updatedTreeData = updateNode(
-        treeData,
-        updatedParent.id,
-        updatedParent
-      );
-      setTreeData(updatedTreeData);
-    } else {
-      const newNode = { id: newNodeId, value: -1 };
-
-      const updatedTreeData = updateNode(treeData, parentId, {
-        ...parentNode,
-        children: [newNode],
-      });
-      setTreeData(updatedTreeData);
-    }
+    const updatedTreeData = updateNode(
+      treeData,
+      updatedParent.id,
+      updatedParent
+    );
+    setTreeData(updatedTreeData);
   };
 
   const handleDeleteNode = (nodeId) => {
@@ -44,11 +30,6 @@ const App = () => {
   };
 
   const deleteNode = (tree, nodeId) => {
-    if (!tree) return null;
-    if (tree.id === nodeId) {
-      return null;
-    }
-
     const updatedChildren = tree.children
       ? tree.children
           .filter((child) => child.id !== nodeId)
@@ -71,23 +52,6 @@ const App = () => {
     }
 
     return tree;
-  };
-
-  const findNode = (tree, nodeId) => {
-    if (tree.id === nodeId) {
-      return { ...tree, parent: null };
-    }
-
-    if (tree.children) {
-      for (let child of tree.children) {
-        const foundNode = findNode(child, nodeId);
-        if (foundNode) {
-          return { ...foundNode, parent: tree };
-        }
-      }
-    }
-
-    return null;
   };
 
   return (

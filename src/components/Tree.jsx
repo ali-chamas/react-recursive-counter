@@ -3,7 +3,7 @@ import Counter from "./Counter";
 
 const TreeNode = ({ node, onAddChild, onDelete }) => {
   const handleAddChild = () => {
-    onAddChild(node.id);
+    onAddChild(node);
   };
 
   const handleDelete = () => {
