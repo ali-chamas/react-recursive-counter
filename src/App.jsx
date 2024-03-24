@@ -19,11 +19,8 @@ const App = () => {
       children: [...(parentNode.children || []), newNode],
     };
 
-    const updatedTreeData = updateNode(
-      treeData,
+    const updatedTreeData = updateNode(treeData, updatedParent);
 
-      updatedParent
-    );
     setTreeData(updatedTreeData);
   };
 
@@ -38,6 +35,7 @@ const App = () => {
 
     return { ...tree, children: updatedChildren };
   };
+
   const handleDeleteNode = (nodeId) => {
     const updatedTree = deleteNode(treeData, nodeId);
     setTreeData(updatedTree);
